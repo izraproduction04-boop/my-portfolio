@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SHANMUGAM - Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f4f9; color: #333; text-align: center; }
         .card { max-width: 950px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
@@ -11,8 +12,8 @@
         p { color: #666; font-size: 1.1rem; }
         .btn { display: inline-block; padding: 12px 24px; margin: 15px 5px; background: #007bff; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; }
         .btn:hover { background: #0056b3; }
-        .pdf-container { margin-top: 25px; width: 100%; height: 750px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
-        object, embed { width: 100%; height: 100%; }
+        .pdf-viewer-container { margin-top: 25px; width: 100%; max-height: 800px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; background: #525659; padding: 10px 0; }
+        canvas { display: block; margin: 10px auto; max-width: 95%; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -25,16 +26,43 @@
         <a href="mailto:yourname@email.com" class="btn">Contact Me</a>
         <a href="portfolio.pdf" target="_blank" class="btn">Download / View PDF</a>
 
-        <!-- Reliable Native PDF Display -->
-        <div class="pdf-container">
-            <object data="portfolio.pdf#toolbar=1&navpanes=0" type="application/pdf">
-                <embed src="portfolio.pdf" type="application/pdf" />
-                <p>Unga browser-la direct preview aagala na, மேல இருக்குற 
-                   <a href="portfolio.pdf" target="_blank">Download / View PDF</a> button-a click panni open pannunga.
-                </p>
-            </object>
+        <!-- Universal PDF Render Container -->
+        <div class="pdf-viewer-container" id="pdf-container">
+            <p style="color:white;" id="loading-text">Loading PDF Portfolio...</p>
         </div>
     </div>
+
+    <script>
+        const url = 'portfolio.pdf';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            document.getElementById('loading-text').style.display = 'none';
+            const container = document.getElementById('pdf-container');
+
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                pdf.getPage(pageNum).then(page => {
+                    const scale = 1.5;
+                    const viewport = page.getViewport({ scale: scale });
+
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    container.appendChild(canvas);
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            }
+        }).catch(err => {
+            document.getElementById('loading-text').innerText = 'PDF Load Aagala. Mela irukura Download button-a click pannunga.';
+        });
+    </script>
 
 </body>
 </html>
