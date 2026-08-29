@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>SHANMUGAM - Portfolio</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f4f9; color: #333; text-align: center; }
-        .card { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .card { max-width: 950px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h1 { color: #111; margin-bottom: 5px; }
         p { color: #666; font-size: 1.1rem; }
         .btn { display: inline-block; padding: 12px 24px; margin: 15px 5px; background: #007bff; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; }
         .btn:hover { background: #0056b3; }
-        .pdf-container { margin-top: 30px; width: 100%; height: 600px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
-        iframe { width: 100%; height: 100%; border: none; }
+        .pdf-container { margin-top: 25px; width: 100%; height: 750px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+        object, embed { width: 100%; height: 100%; }
     </style>
 </head>
 <body>
@@ -25,11 +25,14 @@
         <a href="mailto:yourname@email.com" class="btn">Contact Me</a>
         <a href="portfolio.pdf" target="_blank" class="btn">Download / View PDF</a>
 
-        <!-- PDF Embed Viewer -->
+        <!-- Reliable Native PDF Display -->
         <div class="pdf-container">
-            <iframe src="portfolio.pdf" type="application/pdf">
-                <p>Unga browser-la PDF display aagala na, mela irukura Download button-a click panni paarunga.</p>
-            </iframe>
+            <object data="portfolio.pdf#toolbar=1&navpanes=0" type="application/pdf">
+                <embed src="portfolio.pdf" type="application/pdf" />
+                <p>Unga browser-la direct preview aagala na, மேல இருக்குற 
+                   <a href="portfolio.pdf" target="_blank">Download / View PDF</a> button-a click panni open pannunga.
+                </p>
+            </object>
         </div>
     </div>
 
